@@ -161,12 +161,9 @@
     
         // Determinar el bloque de 30 min más cercano
         const bloque = minutos < 30 ? `${hora}:00` : `${hora}:30`;
-    
         console.log("Hora actual:", bloque); // Debug
-    
         filas.forEach(fila => {
           fila.classList.remove("actual");
-    
           const celdaHora = fila.querySelector("td");
           if (celdaHora) {
             const textoHora = celdaHora.textContent.trim();
