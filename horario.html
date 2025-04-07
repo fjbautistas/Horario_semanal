@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horario Semanal</title>
+    <style>
+        :root { --header-bg: #e6e6f2; /* color lavanda claro, el que tienes en th */ }
+        body { font-family: sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 2px; text-align: center; vertical-align: middle; font-size: 0.85em; }
+        th { background-color: var(--header-bg); font-weight: bold; }
+
+        /* Ancho de las columnas */
+        th:first-child { width: 50px; background-color: #e6e6f2;/* Ancho para la columna de la hora */ }
+        th:not(:first-child) { width: calc(100% / 7); /* Ancho uniforme para los días */ }
+        td { height: 2px; /* Altura para cada intervalo de 30 minutos (ajusta si es necesario) */ }
+
+        /* Clases de color para las actividades - Colores actualizados para una apariencia moderna */
+        .curso { background-color: #374a60; /* Azul profundo elegante */color: #fefae0;}
+        .trabajo-sgc { background-color: #524962; color: #eeeeee; }
+        .personal { background-color: #ffb3c1; /* Lavanda pastel moderno */},
+        .libre,
+        .lectura-alistar-siguiente-dia { background-color: #e9c9f1; /* Lavanda pastel moderno */}
+        .alistamiento-traslado-uls { background-color: #121016; /* Gris oscuro azulado */ color: #eeeeee;}
+        .estudio-uls { background-color: #a3c4f3; /* Azul pastel moderno */}
+        .casa { background-color: #a4a4a4; /* Gris claro limpio */ font-weight: bold; }
+        .dormir { background-color: #000000; color: #eeeeee;}
+
+        .emoji-grande { font-size: 1.6em;line-height: 1; }
+        .subevento { border: 2px dashed #000000; margin-top: 5px; padding: 5px 5px; 
+          font-size: 0.65em; background-color: rgba(255, 255, 255, 0.4); /* opcional */}
+        
+        .actual { background-color: #ffffcc !important; /* Amarillo claro */ border: 2px solid #ffcc00;}
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Hour</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr><td><b>6:30</td> 
+            <td rowspan="3" colspan="5" class="personal">Despertar ⏰, Ejercicio (45 min) 💪🏽 y Desayunar ☕<br>(6:30 - 8:00)</td> 
+            <td></td> <td></td>
+          </tr>
+          <tr><td><b>7:00</td> 
+            <td colspan="2" class="personal">Despertar ⏰</td>
+          </tr>
+          <tr><td><b>7:30</td> 
+            <td rowspan="5" colspan="2" class="personal"> Deporte: 🚴 bici, 🏃 Correr-Caminar, 💪🏽 Fuerza<br>(7:30 - 10:00)</td>
+          </tr>
+          <tr><td><b>8:00</td> 
+            <td colspan="3" class="alistamiento-traslado-uls"> Alistarme y salir a la ULS</td> 
+            <td rowspan="5" colspan="2" class="trabajo-sgc"><b>Trabajo en el SGC<span class="emoji-grande">👨🏻‍💻</span> <br>(08:00 - 10:30)</td> 
+          </tr>
+          <tr><td><b>8:30</td> 
+            <td rowspan="5" class="estudio-uls">
+              <div class="subevento">
+              🗓 <b>Reunión de grupo<br>
+              </div>
+              <div class="subevento">
+                🗓 <b>Reunión de grupo<br>
+              </div>
+            </td> 
+            <td rowspan="2" colspan="2" class="estudio-uls">Estudio en la ULS<br>(8:30 - 9:30)</td> 
+          </tr>
+          <tr><td><b>9:00</td>  
+          </tr>
+          <tr><td><b>9:30</td> 
+            <td rowspan="3" class="curso"><b>Proyecto de <br>Investigación II📚<br>(9:30 - 11:00)</b></td> 
+            <td rowspan="3" class="curso"><b>Proyecto de Tesis📚<br>(9:30 - 11:00)</b></td> 
+          </tr>
+          <tr><td><b>10:00</td> 
+            <td rowspan="6" class="casa"> Mercado y Aseo 🧹<br>(10:00 - 13:00)</td> 
+            <td rowspan="6" class="trabajo-sgc"><b>Trabajo en el SGC<span class="emoji-grande">👨🏻‍💻</span> <br>(10:00 - 13:00)</td>  
+          </tr>
+          <tr><td><b>10:30</td>
+            <td colspan="2" class="alistamiento-traslado-uls"> Alistarme y salir a la ULS</td>  
+          </tr>
+          <tr><td><b>11:00</td> 
+            <td rowspan="4" class="estudio-uls">Estudio en la ULS<br>(11:00 - 13:00)</td>
+            <td rowspan="4" class="curso"><b>Astro-Journal📚 <br>(11:00 - 13:00)</td> 
+            <td rowspan="4" colspan="3" class="estudio-uls"> Estudio en la ULS<br>(11:00 - 13:00)</td> 
+          </tr>
+          <tr><td><b>11:30</td> </tr>
+          <tr><td><b>12:00</td> </tr>
+          <tr><td><b>12:30</td> </tr>
+          <tr><td><b>13:00</td> 
+            <td rowspan="2" colspan="7" class="casa"><b>Armuerzo</b></td> 
+          </tr>
+          <tr><td><b>13:30</td> </tr>
+          <tr><td><b>14:00</td> 
+            <td rowspan="6" class="estudio-uls">Estudio en la ULS<br>(14:00 - 16:30)</td> 
+            <td class="estudio-uls">Estudio en la ULS<br>(14:00 - 14:30)</td>
+            <td rowspan="6" class="estudio-uls">Estudio en la ULS<br>(14:00 - 16:30)</td> 
+            <td colspan="2" class="estudio-uls">Estudio en la ULS<br>(14:00 - 14:30)</td> 
+            <td rowspan="9" class="trabajo-sgc"><b>Trabajo en el SGC<span class="emoji-grande">👨🏻‍💻</span> <br>(14:00 - 18:30)</td> 
+            <td rowspan="9" class="estudio-uls">Estudio en la ULS<br>(14:00 - 18:30)</td>
+          </tr>
+          <tr><td><b>14:30</td> 
+            <td rowspan="3" class="curso"><b>Formación y Evolución de Galaxias📚<br>(14:30 - 16:00)</td> 
+            <td rowspan="3" class="curso"><b>Seminario Astronomía📚<br>(14:30 - 16:00) </td> 
+            <td rowspan="3" class="curso"><b>Formación y Evolución de Galaxias📚<br>(14:30 - 16:00)</td> 
+          </tr>
+          <tr><td><b>15:00</td> </tr>
+          <tr><td><b>15:30</td> </tr>
+          <tr><td><b>16:00</td> 
+            <td rowspan="2" class="estudio-uls">Estudio en la ULS<br>(16:00 - 17:00)</td> 
+            <td rowspan="5" colspan="2" class="estudio-uls">Estudio en la ULS<br>(16:30 - 17:00)</td> 
+          <tr><td><b>16:30</td> </tr>
+          <tr><td><b>17:00</td> 
+            <td colspan="3" class="alistamiento-traslado-uls">Regreso a casa</td>
+          </tr>
+          <tr><td><b>17:30</td> 
+            <td rowspan="7" colspan="3" class="trabajo-sgc"><b>Trabajo en el SGC<span class="emoji-grande">👨🏻‍💻</span> <br>(17:30 - 21:00)</td> 
+          </tr>
+          <tr><td><b>18:00</td> </tr>
+          <tr><td><b>18:30</td> 
+            <td class="alistamiento-traslado-uls">Regreso a casa</td> 
+            <td rowspan="4" class="libre"><b>✨ Libre! ✨<br>(18:30 - 20:30)</td> 
+            <td rowspan="5" class="libre"><b>✨ Libre! ✨<br>(18:30 - 21:00)</td> 
+            <td rowspan="5" class="libre"><b>✨ Libre! ✨<br>(18:30 - 20:00)</td>
+          </tr>
+          <tr><td><b>19:00</td> 
+            <td rowspan="4" class="trabajo-sgc"><b>Trabajo en el SGC<span class="emoji-grande">👨🏻‍💻</span> <br>(19:00 - 21:00)</td> 
+          </tr>
+          <tr><td><b>19:30</td> </tr>
+          <tr><td><b>20:00</td> </tr>
+          <tr><td><b>20:30</td> 
+            <td class="alistamiento-traslado-uls">Regreso a casa</td>
+          </tr>
+          <tr><td><b>21:00</td> 
+            <td rowspan="2" colspan="7" class="casa"><b>Preparar almuerzo - Cena ☕ </b></td> 
+          </tr>
+          <tr><td><b>21:30</td> 
+          <tr><td><b>22:00</td> 
+            <td colspan="7" class="personal">Lectura 📖 - Alistar sigueinte día</td> 
+          </tr>
+          <tr><td><b>22:30</td> 
+            <td colspan="7" class="dormir"><b>Dormir 🛏️</b></td> 
+          </tr>
+      </tbody>
+    </table>
+
+    <script>
+      function resaltarFilaActual() {
+        const filas = document.querySelectorAll("tbody tr");
+        const ahora = new Date();
+        const hora = ahora.getHours();
+        const minutos = ahora.getMinutes();
+    
+        // Determinar el bloque de 30 min más cercano
+        const bloque = minutos < 30 ? `${hora}:00` : `${hora}:30`;
+    
+        console.log("Hora actual:", bloque); // Debug
+    
+        filas.forEach(fila => {
+          fila.classList.remove("actual");
+    
+          const celdaHora = fila.querySelector("td");
+          if (celdaHora) {
+            const textoHora = celdaHora.textContent.trim();
+            if (textoHora === bloque) {
+              fila.classList.add("actual");
+            }
+          }
+        });
+      }
+      // Ejecutar al cargar y cada 60 segundos
+      resaltarFilaActual();
+      setInterval(resaltarFilaActual, 60000);
+    </script>
+    
+</body>
+</html>
