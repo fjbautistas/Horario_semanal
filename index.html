@@ -1,145 +1,128 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.2"/>
-  <title>Weekly Schedule</title>
-  <style>
-    /* --- Estilos Proporcionados (con ajustes) --- */
-    :root { --header-bg: #e6e6f2; }
-    body { font-family: sans-serif; /* margin: 20px; quitado para full width */ }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed; /* Mantener layout fijo */
-        border: 1px solid #ccc;
-    }
-    th, td {
-        border: 1px solid #ccc;
-        padding: 2px 4px; /* Padding ajustado de versión anterior */
-        text-align: center;
-        vertical-align: middle;
-        font-size: 0.8em; /* Tamaño ajustado para compacidad */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        position: relative; /* Necesario para z-index y posicionamiento de línea */
-    }
-    th {
-        background-color: var(--header-bg);
-        font-weight: bold;
-    }
-    /* Ancho columnas Hora */
-    th:first-child, td:first-child,
-    th:last-child, td:last-child {
-        width: 55px; /* Ancho fijo como en tu ejemplo CSS */
-        background-color: #e6e6f2; /* Fondo consistente para hora */
-        font-size: 0.75em;
-        white-space: nowrap;
-    }
-    /* td { height: 2px; } <-- Eliminado: altura se define por contenido y padding */
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weekly Schedule</title>
+    <style>
+        /* --- Estilos Proporcionados (con ajustes) --- */
+        :root { --header-bg: #e6e6f2; }
+        body { font-family: sans-serif; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            border: 1px solid #ccc;
+            overflow-x: auto; /* Añadido para scroll horizontal */
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 1px 2px; /* Padding reducido */
+            text-align: center;
+            vertical-align: middle;
+            font-size: 0.7em; /* Tamaño de fuente reducido */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            word-break: break-word; /* Añadido para romper palabras largas */
+        }
+        th {
+            background-color: var(--header-bg);
+            font-weight: bold;
+        }
+        th:first-child, td:first-child,
+        th:last-child, td:last-child {
+            width: 40px; /* Ancho reducido */
+            background-color: #e6e6f2;
+            font-size: 0.75em;
+            white-space: nowrap;
+        }
+        .curso { background-color: #374a60; color: #fefae0; font-weight: bold; }
+        .trabajo { background-color: #524962; color: #eeeeee; }
+        .personal { background-color: #e9c9f1; }
+        .libre { background-color: #e6e6f2; }
+        .lectura-alistar-siguiente-dia { background-color: #e9c9f1; }
+        .alistamiento-traslado-uls { background-color: #121016; color: #eeeeee; }
+        .estudio-uls { background-color: #a3c4f3; }
+        .casa { background-color: #a4a4a4; font-weight: bold; }
+        .dormir { background-color: #000000; color: #eeeeee; }
+        .emoji-grande { font-size: 1.5em; line-height: 1; }
+        .subevento {
+            border: 1px dashed #555;
+            margin-top: 3px;
+            padding: 2px;
+            font-size: 0.85em;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 3px;
+        }
 
-    /* Colores de Actividad */
-    .curso { background-color: #374a60; 
-      color: #fefae0; 
-      font-weight: bold; /* Añadido bold para cursos */ }
-    .trabajo { background-color: #524962; 
-      color: #eeeeee; }
-    .personal { background-color: #e9c9f1; }
-    .libre { background-color: #e6e6f2; } /* Mismo color que header/hora */
-    .lectura-alistar-siguiente-dia { background-color: #e9c9f1; } /* Clase específica */
-    .alistamiento-traslado-uls { background-color: #121016; 
-      color: #eeeeee; }
-    .estudio-uls { background-color: #a3c4f3; }
-    .casa { background-color: #a4a4a4; 
-      font-weight: bold; } /* Gris para casa, también seminario */
-    .dormir { background-color: #000000; 
-      color: #eeeeee; }
-    .emoji-grande { font-size: 1.5em; line-height: 1; } /* Tamaño ajustado */
-    .subevento {
-        border: 1px dashed #555; /* Borde más sutil */
-        margin-top: 3px;
-        padding: 2px;
-        font-size: 0.85em; /* Relativo al 0.8em del td */
-        background-color: rgba(255, 255, 255, 0.5); /* Fondo semi-transparente */
-        border-radius: 3px;
-    }
+        /* --- Estilos de Resaltado --- */
+        .actual { outline: 2px solid rgba(255, 0, 0, 0.579); outline-offset: -2px; z-index: 5; }
+        .dia-actual { border-top: 3px solid rgba(255, 0, 0, 0.48); border-bottom: 3px solid rgba(255, 0, 0, 0.48); border-left-color: #ccc; border-right-color: #ccc; z-index: 4; }
+        .hora-actual { border-left: 3px solid rgba(255, 0, 0, 0.48); border-right: 3px solid rgba(255, 0, 0, 0.48); border-top-color: #ccc; border-bottom-color: #ccc; box-sizing: border-box; z-index: 4; }
+        .bloque-actual-info {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            z-index: 100;
+        }
+        .linea-roja-extendida { 
+            position: absolute;
+            background-color: rgba(255, 0, 0, 0.48);
+            z-index: 20;
+            pointer-events: none;
+        }
 
-    /* --- Estilos de Resaltado (Según tu CSS) --- */
-    .actual { /* Borde naranja para celda actividad actual */
-        /* Usar outline para no afectar layout */
-        outline: 2px solid rgba(255, 0, 0, 0.579);
-        outline-offset: -2px; /* Para que el borde quede dentro */
-        z-index: 5; /* Ponerla encima de celdas normales pero debajo de línea */
-    }
-    .dia-actual { /* Bordes rojos para cabecera día actual */
-        border-top: 3px solid rgba(255, 0, 0, 0.48);
-        border-bottom: 3px solid rgba(255, 0, 0, 0.48);
-        /* Quitar borde izquierdo/derecho para evitar doble borde en esquinas */
-        border-left-color: #ccc;
-        border-right-color: #ccc;
-        z-index: 4;
-    }
-    .hora-actual { /* Bordes rojos para celdas hora actual */
-        border-left: 3px solid rgba(255, 0, 0, 0.48);
-        border-right: 3px solid rgba(255, 0, 0, 0.48);
-         /* Quitar borde superior/inferior para evitar doble borde en esquinas */
-        border-top-color: #ccc;
-        border-bottom-color: #ccc;
-        box-sizing: border-box; /* Incluir borde en el tamaño */
-        z-index: 4;
-    }
-
-     .bloque-actual-info {
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        background-color: rgba(0, 0, 0, 0.75);
-        color: white;
-        padding: 6px 10px;
-        border-radius: 4px;
-        font-size: 0.85em;
-        z-index: 100;
-    }
-    .linea-roja-extendida { 
-      position: absolute;
-      background-color: rgba(255, 0, 0, 0.48);
-      z-index: 20; /* Encima de todo */ 
-      pointer-events: none; /* No interferir con clicks */ }
-
-  </style>
+        /* --- Media Query para Móviles --- */
+        @media (max-width: 600px) {
+            th, td {
+                padding: 1px 1px;
+                font-size: 0.6em;
+            }
+            th:first-child, td:first-child,
+            th:last-child, td:last-child {
+                width: 30px; /* Ancho aún más reducido */
+            }
+        }
+    </style>
 </head>
 <body>
     <h1 style="text-align: center; font-size: 1.5em; margin-bottom: 5px;">Weekly Schedule</h1>
     <table>
         <thead>
-          <tr><th>Hour</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th><th>Hour</th></tr>
+            <tr><th>Hour</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th><th>Hour</th></tr>
         </thead>
-<tbody>
-            <tr><td><b>06:30</b></td> <td rowspan="3" colspan="5" class="personal">Wake up ⏰, Exercise (45 min) 💪🏽 & Breakfast ☕<br>(6:30 - 8:00)</td> <td colspan="2" class="libre"></td> <td><b>06:30</b></td> </tr>
+        <tbody>
+            <tr><td><b>06:30</b></td> <td rowspan="3" colspan="5" class="personal">Wake up ⏰, Exercise (45 min)  & Breakfast ☕<br>(6:30 - 8:00)</td> <td colspan="2" class="libre"></td> <td><b>06:30</b></td> </tr>
             <tr><td><b>07:00</b></td> <td colspan="2" class="personal">Wake up ⏰</td><td><b>07:00</b></td></tr>
-            <tr><td><b>07:30</b></td> <td rowspan="5" colspan="2" class="personal"> Exercise 💪🏽: Bike, Run-Walk, Strength<br>(7:30 - 10:00)</td> <td><b>07:30</b></td></tr>
+            <tr><td><b>07:30</b></td> <td rowspan="5" colspan="2" class="personal"> Exercise : Bike, Run-Walk, Strength<br>(7:30 - 10:00)</td> <td><b>07:30</b></td></tr>
             <tr><td><b>08:00</b></td> <td colspan="5" class="alistamiento-traslado-uls"> Get ready & leave for ULS</td> <td><b>08:00</b></td></tr>
             <tr><td><b>08:30</b></td> <td rowspan="5" class="estudio-uls"><div class="subevento"> <b>Group meeting</b><br></div><div class="subevento"> <b>Group meeting</b><br></div></td> <td rowspan="5" class="estudio-uls">Study at ULS<br>(8:30 - 11:00)</td> <td rowspan="3" class="estudio-uls">Study at ULS<br>(8:30 - 10:00)</td> <td rowspan="9" class="estudio-uls">Study at ULS<br>(8:30 - 13:00)</td> <td rowspan="9" class="estudio-uls">Study at ULS<br>(8:30 - 13:00)</td> <td><b>08:30</b></td></tr>
             <tr><td><b>09:00</b></td> <td><b>09:00</b></td></tr>
             <tr><td><b>09:30</b></td> <td><b>09:30</b></td></tr>
-            <tr><td><b>10:00</b></td> <td rowspan="2" class="curso"><b>Thesis Project 📚<br>(10:00 - 11:00)</b></td> <td rowspan="6" class="casa"> Groceries & Cleaning <br>(10:00 - 13:00)</td> <td rowspan="6" class="trabajo"><b>Work at SGC 👨🏻‍💻 <span class="emoji-grande">‍</span> <br>(10:00 - 13:00)</td>  <td><b>10:00</b></td></tr>
+            <tr><td><b>10:00</b></td> <td rowspan="2" class="curso"><b>Thesis Project <br>(10:00 - 11:00)</b></td> <td rowspan="6" class="casa"> Groceries & Cleaning <br>(10:00 - 13:00)</td> <td rowspan="6" class="trabajo"><b>Work at SGC ‍ <span class="emoji-grande">‍</span> <br>(10:00 - 13:00)</td>  <td><b>10:00</b></td></tr>
             <tr><td><b>10:30</b></td> <td><b>10:30</b></td></tr>
-            <tr><td><b>11:00</b></td> <td rowspan="4" class="estudio-uls">Study at ULS<br>(11:00 - 13:00)</td><td rowspan="2" class="curso"><b>Research Project II 📚 <br>(11:30 - 12:10)</b></td> <td class="estudio-uls"></td> <td><b>11:00</b></td></tr>
-            <tr><td><b>11:30</b></td> <td rowspan="3" class="curso"><b>Galaxy Formation & Evolution 📚<br>(11:30 - 13:00)</b></td><td><b>11:30</b></td></tr>
-            <tr><td><b>12:00</b></td><td rowspan="2" class="curso"><b>Astro-Journal 📚 <br>(12:00 - 13:00)</td> <td><b>12:00</b></td></tr>
+            <tr><td><b>11:00</b></td> <td rowspan="4" class="estudio-uls">Study at ULS<br>(11:00 - 13:00)</td><td rowspan="2" class="curso"><b>Research Project II  <br>(11:30 - 12:10)</b></td> <td class="estudio-uls"></td> <td><b>11:00</b></td></tr>
+            <tr><td><b>11:30</b></td> <td rowspan="3" class="curso"><b>Galaxy Formation & Evolution <br>(11:30 - 13:00)</b></td><td><b>11:30</b></td></tr>
+            <tr><td><b>12:00</b></td><td rowspan="2" class="curso"><b>Astro-Journal  <br>(12:00 - 13:00)</td> <td><b>12:00</b></td></tr>
             <tr><td><b>12:30</b></td> <td><b>12:30</b></td></tr>
             <tr><td><b>13:00</b></td> <td rowspan="2" colspan="7" class="casa"><b>Lunch</b></td> <td><b>13:00</b></td></tr>
             <tr><td><b>13:30</b></td> <td><b>13:30</b></td></tr>
-            <tr><td><b>14:00</b></td> <td rowspan="7" class="estudio-uls">Study at ULS<br>(14:00 - 17:30)</td> <td class="estudio-uls"></td><td rowspan="7" class="estudio-uls">Study at ULS<br>(14:00 - 17:30)</td> <td colspan="2" class="estudio-uls"></td> <td rowspan="9" class="estudio-uls">Study at ULS<br>(14:00 - 18:30)</td><td rowspan="9" class="trabajo"><b>Work at SGC 👨🏻‍💻<span class="emoji-grande">‍</span> <br>(14:00 - 18:30)</td><td><b>14:00</b></td></tr>
-            <tr><td><b>14:30</b></td> <td rowspan="3" class="curso"><b>Galaxy Formation & Evolution 📚 <br>(14:30 - 16:00)</td>
+            <tr><td><b>14:00</b></td> <td rowspan="7" class="estudio-uls">Study at ULS<br>(14:00 - 17:30)</td> <td class="estudio-uls"></td><td rowspan="7" class="estudio-uls">Study at ULS<br>(14:00 - 17:30)</td> <td colspan="2" class="estudio-uls"></td> <td rowspan="9" class="estudio-uls">Study at ULS<br>(14:00 - 18:30)</td><td rowspan="9" class="trabajo"><b>Work at SGC ‍<span class="emoji-grande">‍</span> <br>(14:00 - 18:30)</td><td><b>14:00</b></td></tr>
+            <tr><td><b>14:30</b></td> <td rowspan="3" class="curso"><b>Galaxy Formation & Evolution  <br>(14:30 - 16:00)</td>
               <td rowspan="2" class="estudio-uls"><div class="subevento"><b>Astronomy Seminar</b></div></td>
-              <td rowspan="3" class="curso"><b>Galaxy Formation & Evolution 📚 <br>(14:30 - 16:00)</td> <td><b>14:30</b></td></tr>           <tr><td><b>15:00</b></td> <td><b>15:00</b></td></tr>
+              <td rowspan="3" class="curso"><b>Galaxy Formation & Evolution  <br>(14:30 - 16:00)</td> <td><b>14:30</b></td></tr>           <tr><td><b>15:00</b></td> <td><b>15:00</b></td></tr>
             <tr><td><b>15:30</b></td> <td rowspan="4" class="estudio-uls">Study at ULS<br>(15:30 - 17:30)</td> <td><b>15:30</b></td></tr>
             <tr><td><b>16:00</b></td> <td rowspan="3" class="estudio-uls">Study at ULS<br>(16:00 - 17:30)</td> <td rowspan="3" class="estudio-uls">Study at ULS<br>(16:00 - 17:30)</td> <td><b>16:00</b></td></tr>
             <tr><td><b>16:30</b></td> <td><b>16:30</b></td></tr>
             <tr><td><b>17:00</b></td> <td><b>17:00</b></td></tr>
             <tr><td><b>17:30</b></td> <td colspan="5" class="alistamiento-traslado-uls">Return home</td> <td><b>17:30</b></td></tr>
-            <tr><td><b>18:00</b></td> <td rowspan="7" colspan="5" class="trabajo"><b>Work at SGC 👨🏻‍💻 <span class="emoji-grande">‍</span> <br>(18:00 - 21:30)</td> <td><b>18:00</b></td></tr>
+            <tr><td><b>18:00</b></td> <td rowspan="7" colspan="5" class="trabajo"><b>Work at SGC ‍ <span class="emoji-grande">‍</span> <br>(18:00 - 21:30)</td> <td><b>18:00</b></td></tr>
             <tr><td><b>18:30</b></td> <td rowspan="6" colspan="2" class="libre"><b>✨ Free! ✨<br>(18:30 - 21:30)</td> <td><b>18:30</b></td></tr>
             <tr><td><b>19:00</b></td> <td><b>19:00</b></td></tr>
             <tr><td><b>19:30</b></td> <td><b>19:30</b></td></tr>
@@ -147,8 +130,8 @@
             <tr><td><b>20:30</b></td> <td><b>20:30</b></td></tr>
             <tr><td><b>21:00</b></td> <td><b>21:00</b></td></tr>
             <tr><td><b>21:30</b></td> <td colspan="7" class="casa">Prep lunch - Dinner ☕ </td> <td><b>21:30</b></td></tr>
-            <tr><td><b>22:00</b></td> <td colspan="7" class="lectura-alistar-siguiente-dia">Reading - Prep for next day 📖</td> <td><b>22:00</b></td></tr>
-            <tr><td><b>22:30</b></td> <td colspan="7" class="dormir"><b>Sleep 😴</b></td> <td><b>22:30</b></td></tr>
+            <tr><td><b>22:00</b></td> <td colspan="7" class="lectura-alistar-siguiente-dia">Reading - Prep for next day </td> <td><b>22:00</b></td></tr>
+            <tr><td><b>22:30</b></td> <td colspan="7" class="dormir"><b>Sleep </b></td> <td><b>22:30</b></td></tr>
         </tbody>
     </table>
 
