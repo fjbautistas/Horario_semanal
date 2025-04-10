@@ -5,91 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weekly Schedule</title>
     <style>
-        /* --- Estilos Proporcionados (con ajustes) --- */
-        :root { --header-bg: #e6e6f2; }
-        body { font-family: sans-serif; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            border: 1px solid #ccc;
-            overflow-x: auto; /* Añadido para scroll horizontal */
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 1px 2px; /* Padding reducido */
-            text-align: center;
-            vertical-align: middle;
-            font-size: 0.7em; /* Tamaño de fuente reducido */
-            overflow: hidden;
-            text-overflow: ellipsis;
-            position: relative;
-            word-break: break-word; /* Añadido para romper palabras largas */
-        }
-        th {
-            background-color: var(--header-bg);
-            font-weight: bold;
-        }
-        th:first-child, td:first-child,
-        th:last-child, td:last-child {
-            width: 40px; /* Ancho reducido */
-            background-color: #e6e6f2;
-            font-size: 0.75em;
-            white-space: nowrap;
-        }
-        .curso { background-color: #374a60; color: #fefae0; font-weight: bold; }
-        .trabajo { background-color: #524962; color: #eeeeee; }
-        .personal { background-color: #e9c9f1; }
-        .libre { background-color: #e6e6f2; }
-        .lectura-alistar-siguiente-dia { background-color: #e9c9f1; }
-        .alistamiento-traslado-uls { background-color: #121016; color: #eeeeee; }
-        .estudio-uls { background-color: #a3c4f3; }
-        .casa { background-color: #a4a4a4; font-weight: bold; }
-        .dormir { background-color: #000000; color: #eeeeee; }
-        .emoji-grande { font-size: 1.5em; line-height: 1; }
-        .subevento {
-            border: 1px dashed #555;
-            margin-top: 3px;
-            padding: 2px;
-            font-size: 0.85em;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 3px;
-        }
-
-        /* --- Estilos de Resaltado --- */
-        .actual { outline: 2px solid rgba(255, 0, 0, 0.579); outline-offset: -2px; z-index: 5; }
-        .dia-actual { border-top: 3px solid rgba(255, 0, 0, 0.48); border-bottom: 3px solid rgba(255, 0, 0, 0.48); border-left-color: #ccc; border-right-color: #ccc; z-index: 4; }
-        .hora-actual { border-left: 3px solid rgba(255, 0, 0, 0.48); border-right: 3px solid rgba(255, 0, 0, 0.48); border-top-color: #ccc; border-bottom-color: #ccc; box-sizing: border-box; z-index: 4; }
-        .bloque-actual-info {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            background-color: rgba(0, 0, 0, 0.75);
-            color: white;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            z-index: 100;
-        }
-        .linea-roja-extendida { 
-            position: absolute;
-            background-color: rgba(255, 0, 0, 0.48);
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        /* --- Media Query para Móviles --- */
-        @media (max-width: 600px) {
-            th, td {
-                padding: 1px 1px;
-                font-size: 0.6em;
-            }
-            th:first-child, td:first-child,
-            th:last-child, td:last-child {
-                width: 30px; /* Ancho aún más reducido */
-            }
-        }
-    </style>
+      /* --- Estilos Proporcionados (con ajustes) --- */
+      :root { --header-bg: #e6e6f2; }
+      body { font-family: sans-serif; }
+      table {
+          width: 100%;
+          min-width: 800px; /* Ajusta este valor según sea necesario */
+          border-collapse: collapse;
+          table-layout: auto; /* Permite que las columnas se ajusten al contenido */
+          border: 1px solid #ccc;
+          overflow-x: auto; /* Habilita el desplazamiento horizontal */
+      }
+      th, td {
+          border: 1px solid #ccc;
+          padding: 2px 4px;
+          text-align: center;
+          vertical-align: middle;
+          font-size: 0.8em;
+          overflow: visible; /* Permite que el contenido se desborde si es necesario */
+          white-space: nowrap; /* Evita que el texto se envuelva */
+      }
+      th {
+          background-color: var(--header-bg);
+          font-weight: bold;
+      }
+      th:first-child, td:first-child,
+      th:last-child, td:last-child {
+          width: 55px;
+          background-color: #e6e6f2;
+          font-size: 0.75em;
+      }
+      .curso { background-color: #374a60; color: #fefae0; font-weight: bold; }
+      .trabajo { background-color: #524962; color: #eeeeee; }
+      .personal { background-color: #e9c9f1; }
+      .libre { background-color: #e6e6f2; }
+      .lectura-alistar-siguiente-dia { background-color: #e9c9f1; }
+      .alistamiento-traslado-uls { background-color: #121016; color: #eeeeee; }
+      .estudio-uls { background-color: #a3c4f3; }
+      .casa { background-color: #a4a4a4; font-weight: bold; }
+      .dormir { background-color: #000000; color: #eeeeee; }
+      .emoji-grande { font-size: 1.5em; line-height: 1; }
+      .subevento {
+          border: 1px dashed #555;
+          margin-top: 3px;
+          padding: 2px;
+          font-size: 0.85em;
+          background-color: rgba(255, 255, 255, 0.5);
+          border-radius: 3px;
+      }
+  
+      /* --- Estilos de Resaltado --- */
+      .actual { outline: 2px solid rgba(255, 0, 0, 0.579); outline-offset: -2px; z-index: 5; }
+      .dia-actual { border-top: 3px solid rgba(255, 0, 0, 0.48); border-bottom: 3px solid rgba(255, 0, 0, 0.48); border-left-color: #ccc; border-right-color: #ccc; z-index: 4; }
+      .hora-actual { border-left: 3px solid rgba(255, 0, 0, 0.48); border-right: 3px solid rgba(255, 0, 0, 0.48); border-top-color: #ccc; border-bottom-color: #ccc; box-sizing: border-box; z-index: 4; }
+      .bloque-actual-info {
+          position: fixed;
+          bottom: 10px;
+          left: 10px;
+          background-color: rgba(0, 0, 0, 0.75);
+          color: white;
+          padding: 6px 10px;
+          border-radius: 4px;
+          font-size: 0.85em;
+          z-index: 100;
+      }
+      .linea-roja-extendida { 
+          position: absolute;
+          background-color: rgba(255, 0, 0, 0.48);
+          z-index: 20;
+          pointer-events: none;
+      }
+  </style>
 </head>
 <body>
     <h1 style="text-align: center; font-size: 1.5em; margin-bottom: 5px;">Weekly Schedule</h1>
